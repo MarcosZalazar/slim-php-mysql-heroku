@@ -21,7 +21,7 @@ require_once './controllers/UsuarioController.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
-// Instantiate App
+// Instantiate App (instancia la app)
 $app = AppFactory::create();
 
 // Add error middleware
