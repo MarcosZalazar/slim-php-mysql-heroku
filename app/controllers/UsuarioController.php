@@ -48,26 +48,37 @@ class UsuarioController extends Usuario implements IApiUsable
     
     public function ModificarUno($request, $response, $args)
     {
-        $parametros = $request->getParsedBody();
+      $id = $request->getAttribute("id");
+      $parametros = $request->getParsedBody();
+      $usuario = $parametros['usuario'];
+      $clave = $parametros['clave'];
 
-        $nombre = $parametros['nombre'];
-        Usuario::modificarUsuario($nombre);
-
+      if(Usuario::modificarUsuario($id,$usuario,$clave))
+      {
         $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
+      }
+      else
+      {
+        $payload = json_encode(array("mensaje" => "No se pudo modificar el usuario"));
+      }
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
+      $response->getBody()->write($payload);
+      return $response
+        ->withHeader('Content-Type', 'application/json');
     }
 
     public function BorrarUno($request, $response, $args)
     {
-        $parametros = $request->getParsedBody();
+        $usuarioId = $request->getAttribute("id");
 
-        $usuarioId = $parametros['usuarioId'];
-        Usuario::borrarUsuario($usuarioId);
-
-        $payload = json_encode(array("mensaje" => "Usuario borrado con exito"));
+        if(Usuario::borrarUsuario($usuarioId))
+        {
+          $payload = json_encode(array("mensaje" => "Usuario borrado con exito"));
+        }
+        else
+        {
+          $payload = json_encode(array("mensaje" => "No se pudo borrar al usuario"));
+        }
 
         $response->getBody()->write($payload);
         return $response
